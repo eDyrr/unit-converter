@@ -1,0 +1,26 @@
+{{define "weight"}}
+<form>
+    <div>
+        <label for="">
+            enter the weight to convert
+        </label>
+        <input name="amount">
+    </div>
+    <div>
+        <label for="">
+            unit to convert from
+        </label>
+        <input type="text" name="from">
+    </div>
+    <div>
+        <label for="">
+            unit to convert to
+        </label>
+        <input type="text" name="to">
+    </div>
+    <button hx-post="/weight">
+        convert
+    </button>
+</form>
+
+{{end}}

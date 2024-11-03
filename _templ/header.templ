@@ -1,0 +1,43 @@
+package _templ
+    
+script changeView(id string) {
+    element = document.getElementById(id)
+}
+
+templ Selector(id string) {
+    <div id={id} onclick={ changeView(id) } style="border: 2px solid black ;">
+        { children... }
+    </div>
+}
+
+templ Header() {
+
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="justify-content: center;">
+   <h1>
+    Unit Converter
+   </h1>
+    <li>
+        <a onclick={ Selector("length") } id="length">
+        Length
+        </a>
+        <a onclick={ Selector("weight")} id="weight">
+        Weight
+        </a>
+        <a onclick={ Selector("temperature")} id="temperature">
+        Temperature 
+        </a>
+    </li>
+
+    <div>
+    </div>
+</body>
+</html>
+}
