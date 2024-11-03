@@ -21,8 +21,8 @@
             unit to convert from
         </label>
         <select name="from">
-            {{range $key, $value := .}}
-            <option value="{{$key}}">{{$key}}</option>
+            {{range .}}
+            <option value="{{.}}">{{.}}</option>
             {{end}}
         </select>
     </div>
@@ -31,12 +31,12 @@
             unit to convert to
         </label>
         <select name="to">
-            {{range $key, $value := .}}
-            <option value="{{$key}}">{{$key}}</option>
+            {{range .}}
+            <option value="{{.}}">{{.}}</option>
             {{end}}
         </select>
     </div>
-    <button hx-post="/temperature">
+    <button hx-post="/temperature" hx-target="#content" hx-target="innerHTML">
         convert
     </button>
 </form>

@@ -40,6 +40,8 @@ var Weights = map[string]float32{
 	"kg": 1000,
 }
 
+var Temperatures = []string{"C", "F"}
+
 // var tmpl *template.Template
 var tmpl = template.Must(template.ParseFiles("./templates/index.html", "./templates/length.html"))
 
@@ -71,7 +73,7 @@ func main() {
 	router.HandleFunc("/length", length).Methods("GET")
 	router.HandleFunc("/weight", weight).Methods("GET")
 	router.HandleFunc("/temperature", func(w http.ResponseWriter, r *http.Request) {
-		tmpl.ExecuteTemplate(w, "temperature", nil)
+		tmpl.ExecuteTemplate(w, "temperature", Temperatures)
 	}).Methods("GET")
 
 	router.HandleFunc("/length", func(w http.ResponseWriter, r *http.Request) {
@@ -91,6 +93,33 @@ func main() {
 
 	}).Methods("POST")
 
+	router.HandleFunc("/temperature", func(w http.ResponseWriter, r *http.Request) {
+		amountStr := r.FormValue("amount")
+		from := r.FormValue("from")
+		to := r.FormValue("to")
+
+		amount, _ := strconv.ParseFloat(amountStr, 32)
+
+		var result Result
+
+		result.Old = float32(amount)
+
+		if from == "C" {
+			result.From = "C"
+			if to == "F" {
+				result.To = "F"
+				result.New = float32((amount * 1.8) + 32)
+			}
+		} else if from == "F" {
+			result.From = "F"
+			if to == "C" {
+				result.To = "C"
+				result.New = float32((amount - 32) / 1.8)
+			}
+		}
+
+		tmpl.ExecuteTemplate(w, "result", result)
+	}).Methods("POST")
 	// // r := chi.NewRouter()
 	// // r.Use(middleware.Logger)
 	// component := _templ.Header()
