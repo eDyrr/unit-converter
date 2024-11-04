@@ -15,7 +15,33 @@ type Conversion struct {
 	To     string
 }
 
-var tmpl *template.Template
+type Result struct {
+	Old  float32
+	New  float32
+	From string
+	To   string
+}
+
+var Lengths = map[string]float32{
+	"mm":  1000.00,
+	"cm":  100.00,
+	"dm":  10.00,
+	"m":   1.00,
+	"dam": 0.1,
+	"hm":  0.01,
+	"km":  0.001,
+}
+
+var Weights = map[string]float32{
+	"mg": 0.1,
+	"g":  1,
+	"cg": 10,
+	"dg": 100,
+	"kg": 1000,
+}
+
+// var tmpl *template.Template
+var tmpl = template.Must(template.ParseFiles("./templates/index.html", "./templates/length.html"))
 
 func init() {
 	var err error
@@ -25,6 +51,16 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func convertLength(c Conversion) Result {
+
+	from := Lengths[c.From]
+	to := Lengths[c.To]
+
+	ratio := to / from
+
+	return Result{c.Amount, c.Amount * ratio, c.From, c.To}
 }
 
 func main() {
@@ -45,13 +81,16 @@ func main() {
 
 		amount, _ := strconv.ParseFloat(amountStr, 32)
 
-		conversion := Conversion{
+		toConvert := Conversion{
 			float32(amount), from, to,
 		}
 
-		fmt.Println(conversion)
+		fmt.Println(toConvert)
+
+		tmpl.ExecuteTemplate(w, "result", convertLength(toConvert))
 
 	}).Methods("POST")
+
 	// // r := chi.NewRouter()
 	// // r.Use(middleware.Logger)
 	// component := _templ.Header()
@@ -69,13 +108,13 @@ func main() {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "index.html", nil)
+	tmpl.ExecuteTemplate(w, "index.html", Lengths)
 }
 
 func length(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "length", nil)
+	tmpl.ExecuteTemplate(w, "length", Lengths)
 }
 
 func weight(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "weight", nil)
+	tmpl.ExecuteTemplate(w, "weight", Weights)
 }

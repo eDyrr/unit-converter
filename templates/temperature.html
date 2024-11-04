@@ -1,22 +1,40 @@
 {{define "temperature"}}
+<style>
+    input[type="text"], select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        color: #333;
+    }
+</style>
 <form>
     <div>
         <label for="">
-            enter the temperature to convert
+            Enter the temperature to convert
         </label>
-        <input name="amount">
+        <input name="amount" type="text" placeholder="Enter amount">
     </div>
     <div>
         <label for="">
             unit to convert from
         </label>
-        <input type="text" name="from">
+        <select name="from">
+            {{range $key, $value := .}}
+            <option value="{{$key}}">{{$key}}</option>
+            {{end}}
+        </select>
     </div>
     <div>
         <label for="">
             unit to convert to
         </label>
-        <input type="text" name="to">
+        <select name="to">
+            {{range $key, $value := .}}
+            <option value="{{$key}}">{{$key}}</option>
+            {{end}}
+        </select>
     </div>
     <button hx-post="/temperature">
         convert

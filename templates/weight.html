@@ -1,24 +1,40 @@
 {{define "weight"}}
+<style>
+    input[type="text"], select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: #333;
+        }
+</style>
 <form>
     <div>
-        <label for="">
-            enter the weight to convert
-        </label>
-        <input name="amount">
+        <label for="amount">Enter the weight to convert:</label>
+        <input type="text" name="amount" id="amount" placeholder="Enter amount">
     </div>
     <div>
         <label for="">
             unit to convert from
         </label>
-        <input type="text" name="from">
+        <select name="" id="">
+            {{range $key, $value := .}}
+            <option value="{{$key}}">{{$key}}</option>
+            {{end}}
+        </select>
     </div>
     <div>
         <label for="">
             unit to convert to
         </label>
-        <input type="text" name="to">
+        <select name="" id="">
+            {{range $key, $value := .}}
+            <option value="{{$key}}">{{$key}}</option>
+            {{end}}
+        </select>
     </div>
-    <button hx-post="/weight">
+    <button hx-post="/weight" hx-target="#content" hx-target="innerHTML">
         convert
     </button>
 </form>

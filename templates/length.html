@@ -1,25 +1,27 @@
 {{define "length"}}
 <form>
     <div>
-        <label for="">
-            Enter the length to convert
-        </label>
-        <input type="text" name="amount">
+        <label for="amount">Enter the length to convert:</label>
+        <input type="text" name="amount" id="amount" placeholder="Enter amount">
     </div>
     <div>
-        <label for="">
-            unit to convert from
-        </label>
-        <input type="text" name="from">
+        <label for="from-unit">Unit to convert from:</label>
+        <select name="from" id="from-unit">
+            {{range $key, $value := .}}
+            <option value="{{$key}}">{{$key}}</option>
+            {{end}}
+        </select>
     </div>
     <div>
-        <label for="">
-            unit to convert to
-        </label>
-        <input type="text" name="to">
+        <label for="to-unit">Unit to convert to:</label>
+        <select name="to" id="to-unit">
+            {{range $key, $value := .}}
+            <option value="{{$key}}">{{$key}}</option>
+            {{end}}
+        </select>
     </div>
-    <button hx-post="/length">
-        convert
+    <button hx-post="/length" hx-target="#content" hx-swap="innerHTML">
+        Convert
     </button>
 </form>
 

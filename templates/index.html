@@ -4,25 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <title>Unit Converter</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Navigation Links */
+        div a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        div a:hover {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        /* Form Styling */
+        #content form {
+            background: #fff;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        #content div {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 500px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            #content form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>
-        Unit Converter    
-    </h1>
-    <div>
-        <a href="" hx-get="/length" hx-target="#content" hx-target="innerHTML">
-            Length
-        </a>
-        <a href="" hx-get="/weight" hx-target="#content" hx-target="innerHTML">
-            Weight
-        </a>
-        <a href="" hx-get="temperature" hx-target="#content" hx-target="innerHTML">
-            Temperature
-        </a>
+    <h1>Unit Converter</h1>
+    <div style="padding: 10px;">
+        <a href="" hx-get="/length" hx-target="#content" hx-swap="innerHTML">Length</a>
+        <a href="" hx-get="/weight" hx-target="#content" hx-swap="innerHTML">Weight</a>
+        <a href="" hx-get="temperature" hx-target="#content" hx-swap="innerHTML">Temperature</a>
     </div>
     <div id="content">
-        {{template "length"}}
+        <form>
+            <div>
+                <label for="amount">Enter the length to convert:</label>
+                <input type="text" name="amount" id="amount" placeholder="Enter amount">
+            </div>
+            <div>
+                <label for="from-unit">Unit to convert from:</label>
+                <select name="from" id="from-unit">
+                    {{range $key, $value := .}}
+                    <option value="{{$key}}">{{$key}}</option>
+                    {{end}}
+                </select>
+            </div>
+            <div>
+                <label for="to-unit">Unit to convert to:</label>
+                <select name="to" id="to-unit">
+                    {{range $key, $value := .}}
+                    <option value="{{$key}}">{{$key}}</option>
+                    {{end}}
+                </select>
+            </div>
+            <button hx-post="/length" hx-target="#content" hx-swap="innerHTML">
+                Convert
+            </button>
+        </form>
     </div>
 </body>
 </html>
